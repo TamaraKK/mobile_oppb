@@ -1,8 +1,11 @@
 import { Text, View, StyleSheet, TextInput, ImageBackground, Button, Pressable} from "react-native";
+import { useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
-export default function Index(props:any) {
+export default function Reg(props:any) {
   const { onPress, title = 'Зарегистрироваться' } = props;
+  const Stack = createNativeStackNavigator();
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../assets/images/Register.png')}>
@@ -25,7 +28,10 @@ export default function Index(props:any) {
         </View>
         <View style={{alignItems:'center', flexDirection:'row', gap:5}}>
           <Text style={{ fontSize: 15 }}>Уже есть аккаунт?</Text>
-          <Text style={{ fontSize: 16, textDecorationLine:'underline' }}>Войти</Text>
+          <Text 
+            style={{ fontSize: 16, textDecorationLine:'underline' }}
+            onPress={() => navigation.navigate('login')}
+          >Войти</Text>
         </View>
       </ImageBackground>
     </View>
