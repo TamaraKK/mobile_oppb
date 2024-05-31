@@ -1,10 +1,8 @@
 import { Text, View, StyleSheet, TextInput, ImageBackground, Button, Pressable} from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function ReDoPassword(props:any) {
   const { onPress, title = 'Подтвердить' } = props;
-  const Stack = createNativeStackNavigator();
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -23,7 +21,7 @@ export default function ReDoPassword(props:any) {
           </View>
           <Pressable 
             style={styles.button} 
-            // onPress={() => navigation.navigate('log_approve')}
+            onPress={() => navigation.navigate('{user}_profile')}
           >
             <Text style={styles.text}>{title}</Text>
           </Pressable>

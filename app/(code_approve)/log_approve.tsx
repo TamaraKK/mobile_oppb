@@ -1,10 +1,8 @@
 import { Text, View, StyleSheet, TextInput, ImageBackground, Button, Pressable} from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function LoginApprove(props:any) {
   const { onPress, title = 'Подтвердить' } = props;
-  const Stack = createNativeStackNavigator();
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
@@ -18,7 +16,10 @@ export default function LoginApprove(props:any) {
             <Text style={{ fontSize: 15, marginRight:'10%', textAlign:'center' }}>Мы отправили вам на почту код подтверждения. Введите его ниже</Text>
             <TextInput style={[styles.input]}></TextInput>
           </View>
-          <Pressable style={styles.button} onPress={onPress}>
+          <Pressable 
+            style={styles.button} 
+            onPress={() => navigation.navigate('{user}_profile')}
+        >
             <Text style={styles.text}>{title}</Text>
           </Pressable>
         </View>

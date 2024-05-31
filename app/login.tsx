@@ -1,10 +1,8 @@
 import { Text, View, StyleSheet, TextInput, ImageBackground, Button, Pressable} from "react-native";
 import { useNavigation } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function Login(props:any) {
   const { onPress, title = 'Войти' } = props;
-  const Stack = createNativeStackNavigator();
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
