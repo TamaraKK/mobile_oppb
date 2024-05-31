@@ -2,38 +2,28 @@ import { Text, View, StyleSheet, TextInput, ImageBackground, Button, Pressable} 
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function Login(props:any) {
-  const { onPress, title = 'Войти' } = props;
+export default function ReDoPassword(props:any) {
+  const { onPress, title = 'Подтвердить' } = props;
   const Stack = createNativeStackNavigator();
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../assets/images/Register.png')}>
+      <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../../assets/images/Register.png')}>
         <View style={styles.registrationText}>
           <Text style={{ fontSize: 40 }}>Вход</Text>
-          <Text style={{ fontSize: 15, marginTop: 15 }}>Добро пожаловать!</Text>
         </View>
         <View style={[styles.viewinput]}>
           <View style={{width:'100%'}}>
-            <Text style={{ fontSize: 15 }}>Почта</Text>
+            <Text style={{ fontSize: 15 }}>Введите новый пароль</Text>
             <TextInput style={[styles.input]}></TextInput>
           </View>
           <View style={{width:'100%'}}>
-            <Text style={{ fontSize: 15 }}>Пароль</Text>
+            <Text style={{ fontSize: 15 }}>Подтвердите новый пароль</Text>
             <TextInput style={[styles.input]}></TextInput>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={{ fontSize: 20, color:'transparent' }}>Some text on the left</Text>
-            <View style={{ alignItems: 'flex-end' }}>
-              <Text 
-                style={{ fontSize: 15, color:'#1e82ee', textDecorationLine:'underline' }}
-                onPress={() => navigation.navigate('redo_password')}
-              >Забыли пароль?</Text>
-            </View>
           </View>
           <Pressable 
             style={styles.button} 
-            onPress={() => navigation.navigate('log_approve')}
+            // onPress={() => navigation.navigate('log_approve')}
           >
             <Text style={styles.text}>{title}</Text>
           </Pressable>
