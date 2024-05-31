@@ -2,39 +2,25 @@ import { Text, View, StyleSheet, TextInput, ImageBackground, Button, Pressable} 
 import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export default function Reg(props:any) {
-  const { onPress, title = 'Зарегистрироваться' } = props;
+export default function RegApprove(props:any) {
+  const { onPress, title = 'Подтвердить' } = props;
   const Stack = createNativeStackNavigator();
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../assets/images/Register.png')}>
+      <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../../assets/images/Register.png')}>
         <View style={styles.registrationText}>
           <Text style={{ fontSize: 40 }}>Регистрация</Text>
-          <Text style={{ fontSize: 15, marginTop: 15 }}>Создайте свой аккаунт</Text>
+          {/* <Text style={{ fontSize: 15, marginTop: 15 }}>Добро пожаловать!</Text> */}
         </View>
         <View style={[styles.viewinput]}>
           <View style={{width:'100%'}}>
-            <Text style={{ fontSize: 15 }}>Почта</Text>
+            <Text style={{ fontSize: 15, marginRight:'10%', textAlign:'center' }}>Мы отправили вам на почту код подтверждения. Введите его ниже</Text>
             <TextInput style={[styles.input]}></TextInput>
           </View>
-          <View style={{width:'100%'}}>
-            <Text style={{ fontSize: 15 }}>Пароль</Text>
-            <TextInput style={[styles.input]}></TextInput>
-          </View>
-          <Pressable 
-            style={styles.button} 
-            onPress={() => navigation.navigate('reg_approve')}
-          >
+          <Pressable style={styles.button} onPress={onPress}>
             <Text style={styles.text}>{title}</Text>
           </Pressable>
-        </View>
-        <View style={{alignItems:'center', flexDirection:'row', gap:5}}>
-          <Text style={{ fontSize: 15 }}>Уже есть аккаунт?</Text>
-          <Text 
-            style={{ fontSize: 16, textDecorationLine:'underline' }}
-            onPress={() => navigation.navigate('login')}
-          >Войти</Text>
         </View>
       </ImageBackground>
     </View>
@@ -87,7 +73,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width:'90%',
     height:43,
-    borderRadius: 4,
+    borderRadius: 6,
     elevation: 3,
     backgroundColor: 'rgba(101, 175, 255, 1)',
   },

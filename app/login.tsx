@@ -28,7 +28,10 @@ export default function Login(props:any) {
               <Text style={{ fontSize: 15, color:'#1e82ee', textDecorationLine:'underline' }}>Забыли пароль?</Text>
             </View>
           </View>
-          <Pressable style={styles.button} onPress={onPress}>
+          <Pressable 
+            style={styles.button} 
+            onPress={() => navigation.navigate('log_approve')}
+          >
             <Text style={styles.text}>{title}</Text>
           </Pressable>
         </View>
