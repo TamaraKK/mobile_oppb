@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ImageBackground, Image, Pressable} from "react-native";
+import { Text, View, StyleSheet, ImageBackground, Image, Pressable,TouchableOpacity} from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
 export default function UserProfile(props:any) {
@@ -9,7 +9,9 @@ export default function UserProfile(props:any) {
       <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../../assets/images/Profile.png')}>
         <View style={[styles.container_header]}>
             <View style={{ width:'100%', marginLeft:"auto"}}>
-                <Image source={require('../../assets/images/edit_icon.png')}/>
+              <TouchableOpacity onPress={() => navigation.navigate('edit_profile')}>
+                <Image source={require('../../assets/images/edit_icon.png')} />
+              </TouchableOpacity>
             </View>
             <View style={{display:'flex', flexDirection:'row', gap:60, width:'100%'}}>
                 <View style={{display:'flex', flexDirection:'column'}}>
