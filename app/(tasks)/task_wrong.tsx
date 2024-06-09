@@ -26,7 +26,7 @@ export default function TaskWrong(props:any) {
         <View style={[styles.viewinput]}>
             <Pressable 
                 style={styles.button} 
-                // onPress={() => navigation.navigate('log_approve')}
+                onPress={() => navigation.navigate('task_{id}')}
             >
                 <Text style={styles.text}>{title}</Text>
             </Pressable>
