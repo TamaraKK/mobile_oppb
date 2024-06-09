@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, TextInput, ImageBackground, Pressable, Image, TouchableOpacity} from "react-native";
+import { Text, View, StyleSheet, ImageBackground, Pressable, Image, TouchableOpacity} from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import React, {useState} from 'react';
 import CheckBox from 'expo-checkbox';
@@ -46,7 +46,6 @@ export default function CustomTask(props:any) {
             <View>
                 <Text style={{ fontSize: 30 }}>Кастомизация задания</Text>
             </View>
-          {/* <Text style={{ fontSize: 15, marginTop: 15 }}>Добро пожаловать!</Text> */}
         </View>
         <View style={[styles.viewinput]}>
             <View style={[styles.chose]}>

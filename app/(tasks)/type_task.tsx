@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, ImageBackground, Pressable, Image, TouchableOpacity, Modal, FlatList} from "react-native";
+import { Text, View, StyleSheet, ImageBackground, Pressable, Image, TouchableOpacity} from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import React, {useState} from 'react';
 import { MultiSelect } from 'react-native-element-dropdown';
@@ -29,7 +29,6 @@ export default function TypeTask(props:any) {
             <View>
                 <Text style={{ fontSize: 30 }}>Тип примера</Text>
             </View>
-          {/* <Text style={{ fontSize: 15, marginTop: 15 }}>Добро пожаловать!</Text> */}
         </View>
         <View style={[styles.viewinput]}>
         <View style={[styles.chose]}>
@@ -46,21 +45,12 @@ export default function TypeTask(props:any) {
                 onChange={item => {
                     setSelected(item);
                 }}
-            //     renderLeftIcon={() => (
-            //         <AntDesign
-            //         style={styles.icon}
-            //         color="black"
-            //         name="Safety"
-            //         size={20}
-            //         />
-            // )}
             selectedStyle={styles.selectedStyle}
             />
-            {/* <Text style={{ fontSize: 16, color: 'rgba(32, 137, 251, 1)' }}>Выбрать</Text> */}
           </View>
             <Pressable 
                 style={styles.button} 
-                // onPress={() => navigation.navigate('log_approve')}
+                onPress={() => navigation.navigate('task_{id}')}
             >
                 <Text style={styles.text}>{title}</Text>
             </Pressable>
@@ -149,8 +139,8 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 45,
-    borderColor: 'gray',
-    borderWidth: 0.5,
+    borderColor: 'rgba(170, 211, 255, 1)',
+    borderWidth: 2,
     borderRadius: 8,
     paddingHorizontal: 8,
     width:220
