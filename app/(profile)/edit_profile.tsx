@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, TextInput, ImageBackground, Button, Pressable, Image} from "react-native";
+import { Text, View, StyleSheet, TextInput, ImageBackground, Button, Pressable, Image, TouchableOpacity} from "react-native";
 import { useNavigation } from '@react-navigation/native';
 
 export default function EditProfile(props:any) {
@@ -9,7 +9,9 @@ export default function EditProfile(props:any) {
       <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../../assets/images/Profile_edit.png')}>
         <View style={styles.registrationText}>
             <View style={{marginRight:"auto"}}>
+              <TouchableOpacity onPress={() => navigation.navigate('{user}_profile')}>
                 <Image source={require('../../assets/images/arrow_back.png')}/>
+              </TouchableOpacity>    
             </View>
             <View>
                 <Image source={require('../../assets/images/user_test.png')}/>
@@ -28,9 +30,6 @@ export default function EditProfile(props:any) {
           <View style={{width:'100%'}}>
             <Text style={{ fontSize: 15 }}>Изменить пароль</Text>
             <TextInput style={[styles.input]}></TextInput>
-          </View>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <Text style={{ fontSize: 20, color:'transparent' }}>Some text on the left</Text>
           </View>
           <Pressable 
             style={styles.button} 

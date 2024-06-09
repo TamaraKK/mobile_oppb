@@ -7,6 +7,8 @@ import RegApprove from './(code_approve)/reg_approve';
 import ReDoPassword from './(code_approve)/redo_password';
 import UserProfile from './(profile)/user_profile';
 import EditProfile from './(profile)/edit_profile';
+import CustomTask from './(tasks)/custom_task';
+import TypeTask from './(tasks)/type_task';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +23,8 @@ export default function RootLayout() {
         <Stack.Screen options={{headerShown:false}} name="redo_password" component={ReDoPassword}/>
         <Stack.Screen options={{headerShown:false}} name="{user}_profile" component={UserProfile}/>
         <Stack.Screen options={{headerShown:false}} name="edit_profile" component={EditProfile}/>
+        <Stack.Screen options={{headerShown:false}} name="custom_task" component={CustomTask}/>    
+        <Stack.Screen options={{headerShown:false}} name="type_task" component={TypeTask}/>    
       </Stack.Navigator>
     </NavigationContainer>
   );

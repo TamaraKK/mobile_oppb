@@ -43,7 +43,7 @@ export default function UserProfile(props:any) {
         <View style={{width:'80%', marginLeft:'10%'}}>
             <Pressable 
                 style={styles.button} 
-                onPress={() => navigation.navigate('log_approve')}
+                onPress={() => navigation.navigate('custom_task')}
             >
                 <Text style={styles.text}>{title}</Text>
             </Pressable>
