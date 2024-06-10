@@ -1,10 +1,16 @@
 import { Text, View, StyleSheet, TextInput, ImageBackground, Button, Pressable} from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { axiosInstance } from "@/api/general";
+import { useState } from "react";
+import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
 
 
 export default function RegApprove(props:any) {
+  const [ isLoading, setLoading ] = useState(false)
+
   const { onPress, title = 'Подтвердить' } = props;
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+  
   return (
     <View style={styles.container}>
       <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../../assets/images/Register.png')}>
@@ -19,7 +25,16 @@ export default function RegApprove(props:any) {
           </View>
           <Pressable 
             style={styles.button} 
-            onPress={() => navigation.navigate('{user}_profile')}
+            disabled={isLoading}
+            onPress={() => {
+              setLoading(true)
+
+              axiosInstance.post("/users/verify", "test").then((response) => {
+                navigation.navigate("login")
+              }).finally(() => {
+                setLoading(false)
+              })
+            }}
         >
             <Text style={styles.text}>{title}</Text>
           </Pressable>

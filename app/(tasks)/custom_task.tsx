@@ -1,7 +1,8 @@
 import { Text, View, StyleSheet, ImageBackground, Pressable, Image, TouchableOpacity} from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
 import React, {useState} from 'react';
 import CheckBox from 'expo-checkbox';
+import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
 
 export default function CustomTask(props:any) {
   const { onPress, title = 'Далее' } = props;
@@ -13,7 +14,7 @@ export default function CustomTask(props:any) {
     multiplication: false
   });
   
-  const handleStarPress = (index) => {
+  const handleStarPress = (index:number) => {
     const newStars = [...stars];
     for (let i = 0; i < newStars.length; i++) {
       if (i <= index) {
@@ -25,15 +26,15 @@ export default function CustomTask(props:any) {
     setStars(newStars);
   };
 
-  const handleCheckboxChange = (checkboxName:any) => {
-    setSelectedCheckboxes(prevState => ({
+  const handleCheckboxChange = (checkboxName:string) => {
+    setSelectedCheckboxes((prevState:any) => ({
       ...prevState,
       [checkboxName]: !prevState[checkboxName]
     }));
   };
-
   
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
   return (
     <View style={styles.container}>
       <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../../assets/images/Profile.png')}>
@@ -92,7 +93,15 @@ export default function CustomTask(props:any) {
             </View>
             <Pressable 
                 style={styles.button} 
-                onPress={() => navigation.navigate('type_task')}
+                onPress={() => {
+                  let operationsText = "";
+                  if (selectedCheckboxes.subtraction) operationsText += "-"
+                  if (selectedCheckboxes.addition) operationsText += "+"
+                  if (selectedCheckboxes.division) operationsText += "/"
+                  if (selectedCheckboxes.multiplication) operationsText += "*"
+
+                  navigation.navigate('type_task', { operations: operationsText, difficulty: stars.reduce((a, b) => (a + (+ b)), 0) })
+                }}
             >
                 <Text style={styles.text}>{title}</Text>
             </Pressable>

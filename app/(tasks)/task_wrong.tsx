@@ -1,10 +1,18 @@
 import { Text, View, StyleSheet, ImageBackground, Pressable, Image, TouchableOpacity} from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
+import { useState } from "react";
+import { axiosInstance } from "@/api/general";
 
 export default function TaskWrong(props:any) {
-    const { onPress, title = 'Далее', route } = props;
-    const navigation = useNavigation();
-    const { wrongAnswer } = route.params;
+  const { onPress, title = 'Далее', route } = props;
+  
+  const { selected, difficulty, operations, task, wrongAnswer } = route.params;
+
+  const [ isLoading, setLoading ] = useState(false)
+  
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
   return (
     <View style={styles.container}>
       <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../../assets/images/Profile.png')}>
@@ -17,16 +25,31 @@ export default function TaskWrong(props:any) {
         </View>
         <View style={[styles.task_block]}>
             <Text style={{fontSize:16, color:'rgba(219, 0, 0, 1)'}}>Ответ неправильный!</Text>
-            <Text style={{fontSize:28}}>x + x + x - y = {wrongAnswer}</Text>
+            <Text style={{fontSize:28}}>{task.example}  =  {wrongAnswer}</Text>
         </View>
         <View style={[styles.task_block]}>
           <Text style={{fontSize:16, color:'rgba(0, 191, 54, 1)'}}>Правильное решение</Text>
-          <Text style={{fontSize:28}}>x + x + x - y = 10</Text>
+          <Text style={{fontSize:28}}>{task.example}  =  {task.correct_answer}</Text>
         </View>
         <View style={[styles.viewinput]}>
             <Pressable 
                 style={styles.button} 
-                onPress={() => navigation.navigate('task_{id}')}
+                disabled={isLoading}
+                onPress={() => {
+                  setLoading(true)
+
+                  const post_data = {
+                    example_type: selected.length > 0 ? selected[Math.floor(Math.random() * selected.length)].toLowerCase() : "",
+                    difficulty: difficulty,
+                    operations: operations
+                  }
+                  
+                  axiosInstance.post("/auth/get-example", post_data).then((response) => {
+                    navigation.navigate('task_{id}', { selected: selected, difficulty: difficulty, operations: operations, task: response.data })
+                  }).finally(() => {
+                    setLoading(false)
+                  })
+                }}
             >
                 <Text style={styles.text}>{title}</Text>
             </Pressable>

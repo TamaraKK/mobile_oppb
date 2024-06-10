@@ -1,34 +1,45 @@
 import { Text, View, StyleSheet, ImageBackground, Pressable, Image, TouchableOpacity} from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
 import Textarea from 'react-native-textarea';
 import { useState } from "react";
+import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
+import { axiosInstance } from "@/api/general";
 
 export default function Task(props:any) {
-    const { onPress, title = 'Ответить' } = props;
-    const { onPresss2, titlee2 = 'Пропустить' } = props;
-    const [userAnswer, setUserAnswer] = useState('');
-    const navigation = useNavigation();
-    const correctAnswer = '10';
+  const { onPress, title = 'Ответить', route } = props;
+  const { onPresss2, titlee2 = 'Пропустить' } = props;
 
-    const handleNextButtonPress = () => {
-        if (userAnswer === correctAnswer) {
-            navigation.navigate('task_{id}/task_right');
-        } else {
-            navigation.navigate('task_{id}/task_wrong', { wrongAnswer: userAnswer });
-        }
+  const [ isLoading, setLoading ] = useState(false)
+  const [userAnswer, setUserAnswer] = useState('');
+
+  const { selected, operations, difficulty, task } = route.params;
+  const { example, correct_answer } = task;
+
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
+  const handleNextButtonPress = () => {
+    const answer = userAnswer
+    setUserAnswer("")
+
+    if (answer === correct_answer) {
+      navigation.navigate('task_{id}/task_right', { selected: selected, difficulty: difficulty, operations: operations, task: task });
+    } else {
+      navigation.navigate('task_{id}/task_wrong', { selected: selected, difficulty: difficulty, operations: operations, task: task, wrongAnswer: answer });
     }
+  }
+
   return (
     <View style={styles.container}>
       <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../../assets/images/Profile.png')}>
         <View style={styles.registrationText}>
             <View style={{marginRight:"auto"}}>
-              <TouchableOpacity onPress={() => navigation.navigate('type_task')}>
+              <TouchableOpacity onPress={() => navigation.navigate('type_task', { operations: operations, difficulty: difficulty })}>
                 <Image source={require('../../assets/images/arrow_back.png')}/>
               </TouchableOpacity>    
             </View>
         </View>
         <View style={[styles.task_block]}>
-            <Text style={{fontSize:28}}>x + x + x - y = ?</Text>
+            <Text style={{fontSize:28}}>{example}</Text>
         </View>
         <View>
             <Textarea
@@ -38,19 +49,37 @@ export default function Task(props:any) {
                 placeholderTextColor={'#c7c7c7'}
                 underlineColorAndroid={'transparent'}
                 value={userAnswer}
-                onChangeText={text => setUserAnswer(text)}
+                onChangeText={(value: string) => setUserAnswer(value)}
             />
         </View>    
         <View style={[styles.viewinput]}>
             <Pressable 
                 style={styles.button} 
+                disabled={isLoading}
                 onPress={handleNextButtonPress}
             >
                 <Text style={styles.text}>{title}</Text>
             </Pressable>
             <Pressable 
                 style={styles.button} 
-                onPress={() => navigation.navigate('task_{id}')}
+                disabled={isLoading}
+                onPress={() => {
+                  setLoading(true)
+
+                  setUserAnswer("")
+
+                  const post_data = {
+                    example_type: selected.length > 0 ? selected[Math.floor(Math.random() * selected.length)].toLowerCase() : "",
+                    difficulty: difficulty,
+                    operations: operations
+                  }
+                  
+                  axiosInstance.post("/auth/get-example", post_data).then((response) => {
+                    navigation.navigate('task_{id}', { selected: selected, difficulty: difficulty, operations: operations, task: response.data })
+                  }).finally(() => {
+                    setLoading(false)
+                  })
+                }}
             >
                 <Text style={styles.text}>{titlee2}</Text>
             </Pressable>

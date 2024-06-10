@@ -1,9 +1,52 @@
 import { Text, View, StyleSheet, TextInput, ImageBackground, Button, Pressable} from "react-native";
-import { useNavigation } from '@react-navigation/native';
+import { ParamListBase, useNavigation } from '@react-navigation/native';
+import { User } from "@/api/user";
+import { axiosInstance } from "@/api/general";
+import { useState } from "react";
+import { useForm, Controller } from 'react-hook-form';
+import { NativeStackNavigationProp } from "react-native-screens/lib/typescript/native-stack/types";
+
 
 export default function Reg(props:any) {
+  const [ isLoading, setLoading ] = useState(false)
+  const [ errorText, setErrorText ] = useState("") 
+
+  const STRONGER_PASSWORD = "Введите более надежный пароль\n\nВаш пароль должен содержать как минимум:\n• 8 символов\n• 1 заглавную букву\n• 1 строчную букву\n• 1 цифру\n• И 1 символ из набора \"@#$%=:?!./|~>*\""
+  const EMAIL_IN_USE = "Введите другой email, данный адрес уже используется"
+
   const { onPress, title = 'Зарегистрироваться' } = props;
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<ParamListBase>>();
+
+  const { control, handleSubmit, formState: { errors } } = useForm({ 
+    defaultValues: { 
+      email: "", 
+      password: "" 
+    }
+  });
+
+  const onSubmit = (data: any) => {
+    setLoading(true)
+
+    let user: User | undefined = undefined
+
+    axiosInstance.post("/users", data).catch((error) => {
+      const message = error.response.data.detail
+
+      if (message == "Email is already exists.") {
+        setErrorText(EMAIL_IN_USE)
+      }
+      else {
+        setErrorText("Произошла неизвестная ошибка, мы работаем над ее устранением")
+        alert("ERROR: ${error.message}")
+      }
+    }).then((response) => {
+      navigation.navigate("reg_approve")
+    }).finally(() => {
+      setLoading(false)
+    })
+  }
+  
+  
   return (
     <View style={styles.container}>
       <ImageBackground style={[styles.img]} resizeMode="cover" source={require('../assets/images/Register.png')}>
@@ -14,18 +57,41 @@ export default function Reg(props:any) {
         <View style={[styles.viewinput]}>
           <View style={{width:'100%'}}>
             <Text style={{ fontSize: 15 }}>Почта</Text>
-            <TextInput style={[styles.input]}></TextInput>
+            <Controller
+              control={control}
+              render={({ field }) => (
+                <TextInput {...field} style={[styles.input]} placeholder="mail@site.com"/>
+              )}
+              name = "email"
+              rules={{ required: 'Введите email', pattern: { value: /^\S+@\S+$/i, message: 'Введите правильный email' } }}
+            />
+            {errors.email && <Text style={{ ...styles.text, color: "red" }}>{errors.email.message}</Text>}
           </View>
           <View style={{width:'100%'}}>
             <Text style={{ fontSize: 15 }}>Пароль</Text>
-            <TextInput style={[styles.input]}></TextInput>
+            <Controller
+              control={control}
+              render={({ field }) => (
+                <TextInput {...field} style={[styles.input]} placeholder="********"/>
+              )}
+              name = "password"
+              rules={{ required: 'Введите пароль', pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%=:?!./|~>*]).{8,32}$/, message: STRONGER_PASSWORD }, minLength: { value: 8, message: "Минимальная длина пароля 8 символов" }, maxLength: { value: 32, message: "Максимальная длина пароля 32 символа" } }}
+            />
+            {errors.password && <Text style={{ ...styles.text, color: "red" }}>{errors.password.message}</Text>}
           </View>
           <Pressable 
-            style={styles.button} 
-            onPress={() => navigation.navigate('reg_approve')}
+            style={{ ...styles.button, backgroundColor: isLoading ? "#808080" : styles.button.backgroundColor }} 
+            disabled={isLoading}
+            onPress={handleSubmit(onSubmit)}
           >
-            <Text style={styles.text}>{title}</Text>
+            <Text style={{ ...styles.text, color: isLoading ? "#222" : styles.text.color }}>{title}</Text>
           </Pressable>
+
+          {errorText.length > 0 && 
+            <View style={{width:'90%', alignItems: "center"}}>
+              <Text style={{ ...styles.text, color: "red" }}>{errorText}</Text>
+            </View>
+          }
         </View>
         <View style={{alignItems:'center', flexDirection:'row', gap:5}}>
           <Text style={{ fontSize: 15 }}>Уже есть аккаунт?</Text>

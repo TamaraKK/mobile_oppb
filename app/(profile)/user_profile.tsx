@@ -27,7 +27,7 @@ export default function UserProfile(props:any) {
             <View style={{justifyContent:'flex-start', width:'100%'}}>
                 <View style={{display:'flex', flexDirection:'row', gap:5, marginBottom:8}}>
                     <Text style={{fontSize:24}}>Рейтинг</Text>
-                    <Text style={{color:'rgba(101, 175, 255, 1)', fontSize:24}}>5 место</Text>
+                    <Text style={{color:'rgba(101, 175, 255, 1)', fontSize:24}}>1 место</Text>
                 </View>
                 <Text>Посмотреть весь топ</Text>
             </View>
